@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from snippets.views import top  # この行を追加
 
 urlpatterns = [
+    path('',top, name='top'),  # この行を追加
     path('admin/', admin.site.urls),
 ]
