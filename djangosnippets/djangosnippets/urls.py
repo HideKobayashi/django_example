@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from snippets.views import top  # この行を追加
+from django.urls import path, include  # include関数を追加でインポート
+from snippets.views import top
 
 urlpatterns = [
-    path('',top, name='top'),  # この行を追加
+    path('',top, name='top'),
+    path('snippets/', include('snippets.urls')),  # snippets/urls.pyの読み込み
     path('admin/', admin.site.urls),
 ]
