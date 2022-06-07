@@ -1,11 +1,9 @@
-# from django.shortcuts import render
-
-# Create your views here.
-
+from django.shortcuts import render
 from django.http import HttpResponse
 
 def top(request):
-    return HttpResponse(b"HelloWorld")
+    return render(request,"snippets/top.html")
+    # return HttpResponse(b"HelloWorld")
 
 
 def snippet_new(request):
