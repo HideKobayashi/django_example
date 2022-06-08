@@ -2,7 +2,12 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.urls import resolve
 from snippets.views import top, snippet_new, snippet_edit, snippet_detail
+from django.contrib.auth import get_user_model #get_user_modelをインポート
+from django.test import TestCase, Client, RequestFactory #RequestFactoryをインポート
+from snippets.models import Snippet
 
+
+UserModel = get_user_model()
 
 class TopPageViewTest(TestCase):
     """View関数のテスト
@@ -40,6 +45,34 @@ class TopPageTest(TestCase):
     #     response = self.client.get("/")
     #     self.assertEqual(response.content, b"HelloWorld")
 
+
+class TopPageRenderSnippetsTest(TestCase):
+    """データベース読み出し表示のテスト
+    """
+    def setUp(self):
+        self.user=UserModel.objects.create(
+            username = "test_user",
+            email="test@example.com",
+            password="top_secret_pass0001",
+        )
+        self.snippet = Snippet.objects.create(
+            title="title1",
+            code="print('hello')",
+            description="description1",
+            created_by=self.user,
+        )
+    
+    def test_should_return_snippet_title(self):
+        request=RequestFactory().get("/")
+        request.user=self.user
+        response=top(request)
+        self.assertContains(response, self.snippet.title)
+
+    def test_should_return_username(self):
+        request=RequestFactory().get("/")
+        request.user=self.user
+        response=top(request)
+        self.assertContains(response, self.user.username)
 
 
 class CreateSnippetTest(TestCase):

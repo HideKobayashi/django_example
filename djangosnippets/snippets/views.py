@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from snippets.models import Snippet
+
 
 def top(request):
-    return render(request,"snippets/top.html")
-    # return HttpResponse(b"HelloWorld")
-
+    snippets = Snippet.objects.all()  #Snippetの一覧を取得
+    context = {"snippets":snippets}  #テンプレートエンジンに与えるPythonオブジェクト
+    return render(request, "snippets/top.html", context)
 
 def snippet_new(request):
     return HttpResponse('スニペットの登録')
