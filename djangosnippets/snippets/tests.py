@@ -1,3 +1,4 @@
+from turtle import title
 from django.test import TestCase
 from django.http import HttpRequest
 from django.urls import resolve
@@ -9,13 +10,13 @@ from snippets.models import Snippet
 
 UserModel = get_user_model()
 
-class TopPageViewTest(TestCase):
-    """View関数のテスト
-    """
-    def test_top_returns_200(self):
-        request = HttpRequest()  # HttpRequest オブジェクトの作成
-        response = top(request)
-        self.assertEqual(response.status_code, 200)
+# class TopPageViewTest(TestCase):
+#     """View関数のテスト
+#     """
+#     def test_top_returns_200(self):
+#         request = HttpRequest()  # HttpRequest オブジェクトの作成
+#         response = top(request)
+#         self.assertEqual(response.status_code, 200)
 
 #     def test_top_returns_expected_content(self):
 #         request=HttpRequest()  # HttpRequestオブジェクトの作成
@@ -76,6 +77,25 @@ class TopPageRenderSnippetsTest(TestCase):
 
 
 class CreateSnippetTest(TestCase):
+    def setUp(self):
+        self.user = UserModel.objects.create(
+            username = "test_user",
+            email = "test@example.com",
+            password = "secret",
+        )
+        self.client.force_login(self.user)  # ユーザーログイン
+
+    def test_render_creation_form(self):
+        response = self.client.get("/snippets/new/")
+        self.assertContains(response, "スニペットの登録", status_code=200)
+
+    def test_create_snippet(self):
+        data = {'title': 'タイトル', 'code': 'コード', 'description': '解説'}
+        self.client.post("/snippets/new/", data)
+        snippet = Snippet.objects.get(title='タイトル')
+        self.assertEqual('コード', snippet.code)
+        self.assertEqual('解説', snippet.description)
+
     def test_should_resolve_snippet_new(self):
         found = resolve("/snippets/new/")
         self.assertEqual(snippet_new, found.func)
