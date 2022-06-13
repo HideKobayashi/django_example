@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'snippets.apps.SnippetsConfig',  # snippets アプリを追加
+    'django_bootstrap5',  # Bootstrap5
 ]
 
 MIDDLEWARE = [
