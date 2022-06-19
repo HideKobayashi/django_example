@@ -16,7 +16,6 @@
                 <a href="/" class="navbar-brand">Djangoスニペット</a>
                 <ul class="navbar-nav mr-md-2">
                     {% if user.is_authenticated %}
-                    <!-- <ul>USER:{ user.username }</ul> -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
                     </li>
