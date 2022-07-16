@@ -16,3 +16,16 @@ def extract_table():
     job = bigquery_client.extract_table('project.dataset.table_id', destination_uris='uri')
 
     return job
+
+def request_bq_query_get_results():
+    bq_client = bigqueryClient(project='test')
+    query_str = "SELECT * FROM `test.dataset.table_id`"
+    query_job = bq_client.query(query_str)
+    results = query_job.results()
+    return results
+
+def request_bq_query():
+    bq_client = bigqueryClient(project='test')
+    query_str = "SELECT * FROM `test.dataset.table_id`"
+    query_job = bq_client.query(query_str)
+    return query_job
