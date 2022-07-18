@@ -53,7 +53,8 @@ def mocked_query_job():
 
 @patch("bigquery_requests.bigqueryClient")
 def test_request_bq_query_get_results(bigqueryClient, mocked_query_job):
-    bigqueryClient().query.return_value = mocked_query_job
+    ret = bigqueryClient().query.return_value = mocked_query_job
+    print(f"ret: {ret}")
 
     results = request_bq_query_get_results()
 
